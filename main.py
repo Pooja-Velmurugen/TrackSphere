@@ -11,7 +11,7 @@ class AdvancedMobileTracker(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Number Tracker ")
-        self.geometry("700x500")    
+        self.geometry("700x550")    
         
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=0)
@@ -26,8 +26,8 @@ class AdvancedMobileTracker(ctk.CTk):
         header_frame.grid(row=0, column=0, sticky="nsew")
         ctk.CTkLabel(header_frame,text="Number Tracker",font=("Arial", 24, "bold"),compound="left").pack(pady=15)
         self.theme_mode = ctk.StringVar(value="Dark")
-        ctk.CTkSwitch(header_frame,text="Dark Mode", variable=self.theme_mode,onvalue="dark", offvalue="Light",command=self.change_theme).pack(pady=10)
-
+        self.theme_switch=ctk.CTkSwitch(header_frame,text="Dark Mode", variable=self.theme_mode,onvalue="Dark", offvalue="Light",command=self.change_theme)
+        self.theme_switch.pack(pady=15)
         
         #input frame section
         input_frame = ctk.CTkFrame(self)
@@ -95,7 +95,16 @@ class AdvancedMobileTracker(ctk.CTk):
         return type_map.get(phonenumbers.number_type(number), "Unknown")
     
     def change_theme(self):
-        ctk.set_appearance_mode(self.theme_mode.get())
+        theme = self.theme_mode.get()
+        if theme in ["Dark", "Light"]:
+            ctk.set_appearance_mode(theme)
+            self.update_theme_text(theme)
+
+    def update_theme_text(self, theme):
+        if theme == "Dark":
+            self.theme_switch.configure(text="Dark Mode")
+        else:
+            self.theme_switch.configure(text="Light Mode")            
     
     def show_error(self, title, message):
         messagebox.showerror(title, message)
